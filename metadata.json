@@ -1,0 +1,7 @@
+{
+  "name": "AviSaúde",
+  "description": "Aplicativo para monitoramento da saúde de aves através de questionários e análise de fezes assistida por IA.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
