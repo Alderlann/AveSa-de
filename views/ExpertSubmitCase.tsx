@@ -23,11 +23,13 @@ const ExpertSubmitCase: React.FC<Props> = ({ profissional, onAdd }) => {
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-    Array.from(files).forEach(file => {
+    // Explicitly type 'file' as File to resolve the 'unknown' to 'Blob' conversion error
+    Array.from(files).forEach((file: File) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData(prev => ({ ...prev, fotos: [...prev.fotos, reader.result as string] }));
       };
+      // Ensures the argument passed to readAsDataURL is a valid Blob/File
       reader.readAsDataURL(file);
     });
   };

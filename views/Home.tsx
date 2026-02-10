@@ -6,64 +6,52 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="p-6 space-y-10 animate-fade-in pb-12">
-      <div className="text-center space-y-6 pt-8">
+    <div className="px-6 py-8 space-y-10 animate-slide-up">
+      <div className="text-center space-y-6">
         <div className="relative inline-block">
-            <div className="w-28 h-28 bg-teal-50 rounded-[35%] flex items-center justify-center mx-auto rotate-12 absolute inset-0"></div>
-            <div className="w-28 h-28 bg-teal-600 rounded-[35%] flex items-center justify-center mx-auto relative z-10 shadow-xl">
-                <svg className="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            <div className="w-24 h-24 bg-teal-100 rounded-[35%] flex items-center justify-center mx-auto rotate-12 absolute inset-0 opacity-50 blur-xl animate-pulse"></div>
+            <div className="w-24 h-24 bg-gradient-to-br from-teal-600 to-teal-800 rounded-[35%] flex items-center justify-center mx-auto relative z-10 shadow-xl shadow-teal-200">
+                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
             </div>
         </div>
         <div className="space-y-2">
-            <h1 className="text-4xl font-black text-teal-800 tracking-tight">AviSaúde</h1>
-            <p className="text-gray-500 font-medium text-sm leading-relaxed max-w-[240px] mx-auto">
-              Monitoramento preventivo e suporte à saúde de aves domésticas com IA.
+            <h1 className="text-4xl font-[900] text-slate-900 tracking-tight leading-tight">Cuidando de<br/><span className="text-teal-600">cada voo.</span></h1>
+            <p className="text-slate-500 text-sm max-w-[280px] mx-auto font-medium leading-relaxed">
+              Monitore a saúde das suas aves com o poder da Inteligência Ornitológica avançada.
             </p>
         </div>
       </div>
 
       <div className="grid gap-4">
-          {[
-              { title: "Cadastro Ágil", text: "Gerencie o histórico de saúde de todas as suas aves em um só lugar.", icon: "🐦" },
-              { title: "Análise de Fezes", text: "Envie fotos e receba um indicativo de alterações digestivas via IA.", icon: "📸" },
-              { title: "Escala de Risco", text: "Saiba quando é o momento crítico de procurar um veterinário.", icon: "🚨" }
-          ].map((item, i) => (
-              <div key={i} className="bg-white p-4 rounded-2xl flex items-start space-x-4 shadow-sm border border-gray-100">
-                  <div className="text-2xl mt-1">{item.icon}</div>
-                  <div>
-                      <h4 className="font-bold text-gray-800 text-sm">{item.title}</h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{item.text}</p>
-                  </div>
-              </div>
-          ))}
+        <button
+            onClick={() => navigate('/birds')}
+            className="w-full bg-slate-900 text-white font-bold py-5 rounded-[28px] shadow-2xl shadow-slate-300 active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+        >
+            <span className="text-sm tracking-wide uppercase">Começar Agora</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </button>
+        
+        <button
+            onClick={() => navigate('/expert/login')}
+            className="w-full glass text-slate-700 font-bold py-5 rounded-[28px] active:scale-[0.98] transition-all flex items-center justify-center space-x-3"
+        >
+            <span className="text-sm tracking-wide uppercase">Área do Especialista</span>
+        </button>
       </div>
 
-      <div className="bg-orange-50 border-2 border-orange-100 p-5 rounded-[24px]">
-        <div className="flex space-x-3">
-          <div className="text-orange-500 text-xl font-bold">⚠️</div>
-          <div className="space-y-1">
-            <h3 className="text-xs font-black text-orange-800 uppercase tracking-widest">Aviso Legal</h3>
-            <p className="text-[11px] text-orange-700 leading-normal font-medium">
-              Esta análise é <strong>exclusivamente indicativa</strong> e não substitui a avaliação clínica. O app não prescreve medicamentos. Em emergências, procure um veterinário imediatamente.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <button
-        onClick={() => navigate('/birds')}
-        className="w-full bg-teal-600 text-white font-black py-5 rounded-[24px] shadow-2xl shadow-teal-200 hover:bg-teal-700 transition active:scale-95 flex items-center justify-center space-x-3 uppercase tracking-widest text-sm"
-      >
-        <span>Acessar o App</span>
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      </button>
-
-      <div className="text-center">
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">v1.2.0 • Pilot Program</p>
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-[32px] border border-amber-100/50 shadow-sm relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-amber-200/20 rounded-full -mr-10 -mt-10 group-hover:scale-110 transition-transform"></div>
+          <h3 className="text-amber-900 font-extrabold text-sm mb-4 flex items-center">
+              <span className="bg-amber-200/50 p-1 rounded-lg mr-2">✨</span> 
+              Destaques da IA
+          </h3>
+          <ul className="text-amber-800 text-[11px] space-y-3 font-semibold leading-tight">
+              <li className="flex items-start"><span className="mr-2">🌱</span> Análise Multimodal de Penas e Bico</li>
+              <li className="flex items-start"><span className="mr-2">🔎</span> Diagnóstico Preventivo Profundo</li>
+              <li className="flex items-start"><span className="mr-2">☀️</span> Consultoria de Manejo e Banho de Sol</li>
+          </ul>
       </div>
     </div>
   );

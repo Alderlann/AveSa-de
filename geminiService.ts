@@ -8,38 +8,35 @@ export async function analyzeBirdHealth(
   ave: Ave, 
   analise: Analise, 
   casosReferencia: CasoReferencia[] = []
-): Promise<ResultadoIA & { sources?: any[] }> {
+): Promise<ResultadoIA> {
   
-  // Resumo de casos de referência para contexto (simulação de aprendizado)
   const contextoCasos = casosReferencia.length > 0 
-    ? `CONTEXTO DE CASOS REAIS VETERINÁRIOS:\n${casosReferencia.map(c => `- ${c.especie}: ${c.sintomas} | Analise: ${c.analiseTecnica}`).join('\n')}`
-    : "";
+    ? `BASE DE DADOS CLÍNICOS (Casos de Referência):\n${casosReferencia.map(c => `- Espécie: ${c.especie} | Sintomas: ${c.sintomas} | Diagnóstico Confirmado: ${c.analiseTecnica}`).join('\n')}`
+    : "Use sua base de conhecimento nativa para ornitopatologia.";
 
   const prompt = `
-    Você é um sistema especialista de elite em Medicina Veterinária de Aves (Ornitopatologia). 
-    Sua tarefa é realizar uma ANALISE MULTIMODAL COMPLETA integrando fotos clínicas, ambiente e histórico.
+    Você é um Especialista em Medicina de Aves Selvagens e Exóticas. 
+    Analise os dados e as imagens fornecidas (bico, unhas, ambiente e fezes) para gerar um relatório de saúde preventivo.
 
-    DADOS DA AVE:
+    DADOS DO PACIENTE:
     Nome: ${ave.nome}, Espécie: ${ave.especie}, Idade: ${ave.idade}, Sexo: ${ave.sexo}, Ambiente: ${ave.ambiente}.
 
-    CONTEXTO CLÍNICO:
-    - Relato do Tutor: ${analise.descricaoEstadoGeral || 'Não fornecido'}
-    - Sintomas: ${analise.sintomas.join(', ')}
-    - Dieta: ${analise.alimentacaoPrincipal}
+    HISTÓRICO ATUAL:
+    Sintomas: ${analise.sintomas.join(', ')}
+    Relato do tutor: ${analise.descricaoEstadoGeral || 'N/A'}
+    Dieta: ${analise.alimentacaoPrincipal}
 
     ${contextoCasos}
 
-    DIRETRIZES DE ANÁLISE VISUAL (ALÉM DAS FEZES):
-    1. BICO: Verifique desalinhamento (ramfoteca), crescimento excessivo, descamação ou fendas.
-    2. UNHAS: Avalie o comprimento e curvatura. Unhas muito longas podem indicar falta de desgaste natural ou problemas hepáticos crônicos.
-    3. HIGIENE DA GAIOLA: Observe o fundo da gaiola nas fotos. Verifique acúmulo de dejetos antigos, restos de comida ou umidade excessiva que favorece fungos/bactérias.
-    4. PERFORMANCE E PENAS: Avalie a qualidade das penas (estresse, linhas de crescimento).
+    INSTRUÇÕES DE PENSAMENTO CLÍNICO:
+    - Analise rigorosamente as fotos em busca de anormalidades na queratina do bico.
+    - Avalie o comprimento das unhas e o desgaste natural.
+    - Identifique sinais de manejo inadequado (higiene da gaiola).
+    - Interprete a consistência e cor das fezes/uratos.
 
-    ORIENTAÇÕES OBRIGATÓRIAS:
-    - Banho de Sol: Explique a importância para a síntese de Vitamina D3 e saúde do bico/penas.
-    - Higiene: Como manter o ambiente para evitar reinfecções.
+    OBRIGATÓRIO: Incluir orientações sobre Banho de Sol e Manutenção de Penas.
 
-    FORMATO DE RESPOSTA: JSON estrito.
+    Responda EXCLUSIVAMENTE em formato JSON.
   `;
 
   const parts: any[] = [{ text: prompt }];
@@ -63,10 +60,10 @@ export async function analyzeBirdHealth(
   }
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
+    model: 'gemini-3-pro-preview', // Pro para tarefas complexas
     contents: { parts },
     config: {
-      tools: [{ googleSearch: {} }],
+      thinkingConfig: { thinkingBudget: 32768 }, // Max thinking para raciocínio clínico
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.OBJECT,
@@ -93,13 +90,11 @@ export async function analyzeBirdHealth(
   });
 
   const data = JSON.parse(response.text || '{}');
-  const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
   
   return {
     id: Math.random().toString(36).substr(2, 9),
     analiseId: analise.id,
     dataResultado: new Date().toISOString(),
-    ...data,
-    sources: groundingChunks
+    ...data
   };
 }

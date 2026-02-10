@@ -74,7 +74,8 @@ const AnalysisForm: React.FC<Props> = ({ birds, analyses, expertCases, onComplet
     const availableSlots = 10 - currentPhotos.length;
     const filesToAdd = Array.from(files).slice(0, availableSlots);
 
-    filesToAdd.forEach(file => {
+    // Explicitly type 'file' as File to resolve the 'unknown' to 'Blob' conversion error
+    filesToAdd.forEach((file: File) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData(prev => ({
@@ -82,6 +83,7 @@ const AnalysisForm: React.FC<Props> = ({ birds, analyses, expertCases, onComplet
           fotosFezes: [...(prev.fotosFezes || []), reader.result as string]
         }));
       };
+      // Ensures the argument passed to readAsDataURL is a valid Blob/File
       reader.readAsDataURL(file);
     });
   };

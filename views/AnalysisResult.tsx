@@ -15,125 +15,103 @@ const AnalysisResult: React.FC<Props> = ({ analyses }) => {
   if (!analysis || !analysis.resultado) return <div className="p-6">Resultado não encontrado.</div>;
 
   const res = analysis.resultado;
-  const sources = (res as any).sources || [];
 
-  const getRiskDetails = (risk: ClassificacaoRisco) => {
+  const getRiskStyles = (risk: ClassificacaoRisco) => {
     switch (risk) {
-      case 'Normal': return { color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200', icon: '✅' };
-      case 'Alteração leve': return { color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-200', icon: '🔍' };
-      case 'Moderada': return { color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200', icon: '⚠️' };
-      case 'Alerta': return { color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200', icon: '🚨' };
-      default: return { color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-200', icon: '❓' };
+      case 'Normal': return { color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200', icon: '💎' };
+      case 'Alteração leve': return { color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-200', icon: '🔍' };
+      case 'Moderada': return { color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200', icon: '⚠️' };
+      case 'Alerta': return { color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200', icon: '🚨' };
+      default: return { color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200', icon: '❓' };
     }
   };
 
-  const rd = getRiskDetails(res.classificacao);
+  const rs = getRiskStyles(res.classificacao);
 
   return (
-    <div className="p-6 space-y-6 animate-fade-in pb-12">
-      <div className="text-center space-y-1">
-        <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Análise Indicativa IA</h2>
-        <p className="text-xs text-gray-400 font-medium uppercase tracking-widest">{new Date(res.dataResultado).toLocaleDateString()} • {new Date(res.dataResultado).toLocaleTimeString()}</p>
+    <div className="px-6 py-8 space-y-8 animate-slide-up">
+      <div className="text-center">
+        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Relatório IA Pro</span>
+        <h2 className="text-2xl font-black text-slate-900 mt-2">Diagnóstico Preventivo</h2>
       </div>
 
-      <div className={`p-6 rounded-[32px] border-2 text-center shadow-sm ${rd.bg} ${rd.border}`}>
-        <span className="text-[40px] block mb-2">{rd.icon}</span>
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-400">Risco Estimado</span>
-        <h3 className={`text-3xl font-black mt-1 ${rd.color}`}>{res.classificacao}</h3>
+      <div className={`${rs.bg} ${rs.border} border-2 rounded-[40px] p-8 text-center shadow-xl shadow-slate-100 relative overflow-hidden`}>
+        <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+        <span className="text-5xl block mb-4">{rs.icon}</span>
+        <h3 className={`text-4xl font-black ${rs.color} tracking-tight`}>{res.classificacao}</h3>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{new Date(res.dataResultado).toLocaleDateString()} • {new Date(res.dataResultado).toLocaleTimeString()}</p>
       </div>
 
-      <div className="space-y-4">
-        {/* Análise Fecal e Clínica */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-5">
-            <section>
-                <div className="flex items-center space-x-2 mb-2">
-                    <div className="w-1.5 h-6 bg-teal-500 rounded-full"></div>
-                    <h4 className="font-bold text-gray-800 text-sm">Achados e Referências</h4>
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed">{res.padraoObservado}</p>
-            </section>
+      <div className="space-y-6">
+        <section className="bg-white rounded-[32px] p-7 border border-slate-100 shadow-sm space-y-6">
+            <div>
+                <h4 className="text-xs font-black text-teal-600 uppercase tracking-widest mb-3 flex items-center">
+                    <span className="w-1.5 h-4 bg-teal-500 rounded-full mr-2"></span> Padronização Clínica
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">{res.padraoObservado}</p>
+            </div>
             
-            <section>
-                <div className="flex items-center space-x-2 mb-2">
-                    <div className="w-1.5 h-6 bg-teal-500 rounded-full"></div>
-                    <h4 className="font-bold text-gray-800 text-sm">Análise de Causalidade</h4>
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed">{res.possiveisCausas}</p>
-            </section>
-        </div>
-
-        {/* Análise Anatômica e Manejo */}
-        <div className="bg-teal-900 text-white rounded-[32px] p-6 shadow-xl space-y-6">
-            <div className="flex items-center space-x-2 border-b border-teal-800 pb-3">
-                <span className="text-xl">🩺</span>
-                <h4 className="font-bold text-sm uppercase tracking-widest">Avaliação de Manejo</h4>
+            <div className="pt-6 border-t border-slate-50">
+                <h4 className="text-xs font-black text-teal-600 uppercase tracking-widest mb-3 flex items-center">
+                    <span className="w-1.5 h-4 bg-teal-500 rounded-full mr-2"></span> Causalidade Provável
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">{res.possiveisCausas}</p>
             </div>
+        </section>
 
-            <div className="grid gap-5">
-                <div>
-                    <span className="text-[10px] font-black uppercase text-teal-400">Bico e Ramfoteca</span>
-                    <p className="text-xs mt-1 leading-relaxed opacity-90">{res.analiseBico}</p>
+        <section className="bg-slate-900 rounded-[40px] p-8 text-white shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+                <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <h4 className="text-teal-400 font-black text-[10px] uppercase tracking-[0.2em] mb-6">Manejo & Anatomia</h4>
+            <div className="space-y-6">
+                <div className="flex space-x-4">
+                    <span className="text-xl">🦜</span>
+                    <div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase">Análise de Bico</p>
+                        <p className="text-xs mt-1 leading-relaxed text-slate-200">{res.analiseBico}</p>
+                    </div>
                 </div>
-                <div>
-                    <span className="text-[10px] font-black uppercase text-teal-400">Unhas e Articulações</span>
-                    <p className="text-xs mt-1 leading-relaxed opacity-90">{res.analiseUnhas}</p>
+                <div className="flex space-x-4">
+                    <span className="text-xl">💅</span>
+                    <div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase">Estado das Unhas</p>
+                        <p className="text-xs mt-1 leading-relaxed text-slate-200">{res.analiseUnhas}</p>
+                    </div>
                 </div>
-                <div>
-                    <span className="text-[10px] font-black uppercase text-teal-400">Higiene do Recinto</span>
-                    <p className="text-xs mt-1 leading-relaxed opacity-90">{res.analiseHigiene}</p>
+                <div className="flex space-x-4">
+                    <span className="text-xl">🧼</span>
+                    <div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase">Higiene Ambiental</p>
+                        <p className="text-xs mt-1 leading-relaxed text-slate-200">{res.analiseHigiene}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        {/* Orientações de Performance */}
-        <div className="bg-amber-50 border border-amber-100 rounded-3xl p-6">
-            <div className="flex items-center space-x-2 mb-3">
-                <span className="text-lg">☀️</span>
-                <h4 className="font-bold text-amber-900 text-sm">Performance e Bem-estar</h4>
-            </div>
-            <p className="text-amber-800 text-xs leading-relaxed font-medium">{res.orientacoesPerformance}</p>
-        </div>
-
-        {sources.length > 0 && (
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
-            <h4 className="font-bold text-gray-800 text-xs uppercase mb-3 tracking-wide flex items-center">
-                <span className="mr-2">📚</span> Embasamento Científico
+        <div className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-[32px] p-8 text-white shadow-xl shadow-teal-100">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-teal-200 mb-3 flex items-center">
+                <span className="mr-2">☀️</span> Performance & Banho de Sol
             </h4>
-            <div className="space-y-2">
-              {sources.map((chunk: any, i: number) => {
-                const link = chunk.web?.uri || chunk.maps?.uri;
-                const title = chunk.web?.title || chunk.maps?.title;
-                if (!link) return null;
-                return (
-                  <a key={i} href={link} target="_blank" rel="noopener noreferrer" className="block text-[10px] text-teal-700 underline truncate">
-                    {title || link}
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        )}
+            <p className="text-sm font-bold leading-relaxed">{res.orientacoesPerformance}</p>
+        </div>
 
-        <div className="bg-red-600 rounded-[32px] p-6 text-white shadow-lg shadow-red-100">
-            <h4 className="font-black text-xs uppercase mb-2 tracking-widest opacity-80 flex items-center">
-                <span className="mr-2">🚨</span> Alerta Veterinário
-            </h4>
-            <p className="text-sm font-bold leading-relaxed">{res.alertaVeterinario}</p>
+        <div className="bg-rose-600 rounded-[32px] p-8 text-white shadow-xl shadow-rose-200">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-rose-200 mb-3">Protocolo de Emergência</h4>
+            <p className="text-sm font-black leading-relaxed">{res.alertaVeterinario}</p>
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-2xl p-4 text-[11px] text-gray-500 leading-normal border border-gray-200 italic">
-        <strong>Nota:</strong> Esta IA utiliza dados comparativos de casos reais submetidos por especialistas para aprimorar sua precisão. No entanto, o diagnóstico presencial é insubstituível.
+      <div className="bg-slate-100 rounded-[32px] p-6 text-[10px] text-slate-400 font-bold leading-relaxed border border-slate-200 text-center uppercase tracking-wider">
+        Aviso: Este relatório é gerado por IA com Thinking Budget estendido e serve apenas como guia preventivo. Consulte sempre um médico veterinário.
       </div>
 
-      <div className="pt-2">
-        <button
-          onClick={() => navigate(`/birds/${analysis.aveId}`)}
-          className="w-full bg-teal-800 text-white font-bold py-5 rounded-[24px] shadow-xl active:scale-95 transition uppercase tracking-widest text-sm"
-        >
-          Finalizar Análise
-        </button>
-      </div>
+      <button
+        onClick={() => navigate(`/birds/${analysis.aveId}`)}
+        className="w-full bg-slate-900 text-white font-black py-5 rounded-[28px] shadow-2xl shadow-slate-300 active:scale-95 transition-all uppercase tracking-widest text-xs"
+      >
+        Concluir e Salvar
+      </button>
     </div>
   );
 };
